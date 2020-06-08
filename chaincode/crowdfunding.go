@@ -53,9 +53,9 @@ type User struct {
  * Here we have initiated SmartContract with the Event Details
  */
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
-	var eventName string ="Raise Funds to increase Green Cover"
-	var orgDetails string = "We are a non-profitable community development organisation. Our mission is to create a green industry, which helps to solve environmental problems through the development of innovative solutions. We do such projects which reduces environmental harm and its effects on future generation."
-	var eventDetails string = "We actively supports people or communities to achieve their goals for environment protection. One of our project includes transformation of the dried land into green area. This crowdfunding project is to raise funds to complete this transformation successfully. The money raised will go towards equipment, agricultural techniques, soil purchase and helping land-owners so that this can be used as effectively as possible. The presence of green area provides multiple benefits to all. The more pledges we receive the longer the land can remain useful."
+	var eventName string ="PMCARES Fund for Covid-19 Situation"
+	var orgDetails string = "PMCARS fund is aimed at strenghting the fight against Covid-19. It will further availability of quality treatment and encourage research on ways to beat coronavirus"
+	var eventDetails string = "Collecting Funds for PMCARES event"
 	var requiredAmount int = 5000
 	var eventDuration int = 20
 
@@ -83,6 +83,11 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
    	}else if function == "queryAllDonations" {
    		return s.queryAllDonations(APIstub)
    	}else if function == "queryAllUsers" {
+   		return s.queryAllUsers(APIstub)
+   	}
+	else if function == "pledgefunds" {       //Newly added code
+   		return s.queryAllUsers(APIstub)
+   	}else if function == "trackmyfunds" {
    		return s.queryAllUsers(APIstub)
    	}
 	return shim.Error("Invalid Smart Contract function name.")
@@ -196,6 +201,116 @@ func (s *SmartContract) queryAllUsers(APIstub shim.ChaincodeStubInterface) sc.Re
 
 /* Function to Donate money for the Crowdfunding Event */
 func (s *SmartContract) donateMoney(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	if len(args) != 4 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+
+  	var Contactnumber int
+  	var existingVal int
+	var newVal int
+  	var donatedQuantity int
+	var donationIDArr []string
+	var userID string
+	var donationID string
+	var newDonationID int
+	var numOfDonationsMade int
+
+	donatedQuantity, _ = strconv.Atoi(args[0])
+  	eventAsBytes, _ := APIstub.GetState("E1")
+  	event := Event{}
+  	json.Unmarshal(eventAsBytes, &event)
+	donationIDArr = event.DonationIDs
+	numOfDonationsMade=len(donationIDArr)
+	if numOfDonationsMade == 0{
+		newDonationID = 100
+	}else{
+		split_donation_id := strings.Split(donationIDArr[numOfDonationsMade-1], "D")
+		newDonationID,_=strconv.Atoi(split_donation_id[1])
+	}
+	newDonationID = newDonationID + 1
+	donationID = "D"+strconv.Itoa(newDonationID)
+	userID = "U"+strconv.Itoa(newDonationID)
+  	existingVal = event.DonatedAmount
+	newVal = existingVal + donatedQuantity
+  	if newVal > event.RequiredAmount {
+		return shim.Error("Donated quantity is more than required. Hence could not donate.")
+	} else {
+		event.DonatedAmount = existingVal + donatedQuantity
+    	event.DonationIDs = append(event.DonationIDs, donationID)
+    	eventAsBytes, _ := json.Marshal(event)
+		APIstub.PutState("E1", eventAsBytes)
+
+		var donate = Donation{DonationID: donationID, EventID: "E1", UserID: userID, DonationAmount: donatedQuantity}
+
+    	donateAsBytes, _ := json.Marshal(donate)
+  		APIstub.PutState(donationID, donateAsBytes)
+
+    	Contactnumber, _ = strconv.Atoi(args[2])
+    	var user = User{UserID: userID, Username: args[1], ContactNumber: Contactnumber, EmailID:args[3]}
+
+    	userAsBytes, _ := json.Marshal(user)
+  		APIstub.PutState(userID, userAsBytes)
+		return shim.Success(nil)
+	}
+}
+
+/* Function to pledge for funds from PMCares */
+func (s *SmartContract) pledgefunds(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	if len(args) != 4 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+
+  	var Contactnumber int
+  	var existingVal int
+	var newVal int
+  	var donatedQuantity int
+	var donationIDArr []string
+	var userID string
+	var donationID string
+	var newDonationID int
+	var numOfDonationsMade int
+
+	donatedQuantity, _ = strconv.Atoi(args[0])
+  	eventAsBytes, _ := APIstub.GetState("E1")
+  	event := Event{}
+  	json.Unmarshal(eventAsBytes, &event)
+	donationIDArr = event.DonationIDs
+	numOfDonationsMade=len(donationIDArr)
+	if numOfDonationsMade == 0{
+		newDonationID = 100
+	}else{
+		split_donation_id := strings.Split(donationIDArr[numOfDonationsMade-1], "D")
+		newDonationID,_=strconv.Atoi(split_donation_id[1])
+	}
+	newDonationID = newDonationID + 1
+	donationID = "D"+strconv.Itoa(newDonationID)
+	userID = "U"+strconv.Itoa(newDonationID)
+  	existingVal = event.DonatedAmount
+	newVal = existingVal + donatedQuantity
+  	if newVal > event.RequiredAmount {
+		return shim.Error("Donated quantity is more than required. Hence could not donate.")
+	} else {
+		event.DonatedAmount = existingVal + donatedQuantity
+    	event.DonationIDs = append(event.DonationIDs, donationID)
+    	eventAsBytes, _ := json.Marshal(event)
+		APIstub.PutState("E1", eventAsBytes)
+
+		var donate = Donation{DonationID: donationID, EventID: "E1", UserID: userID, DonationAmount: donatedQuantity}
+
+    	donateAsBytes, _ := json.Marshal(donate)
+  		APIstub.PutState(donationID, donateAsBytes)
+
+    	Contactnumber, _ = strconv.Atoi(args[2])
+    	var user = User{UserID: userID, Username: args[1], ContactNumber: Contactnumber, EmailID:args[3]}
+
+    	userAsBytes, _ := json.Marshal(user)
+  		APIstub.PutState(userID, userAsBytes)
+		return shim.Success(nil)
+	}
+}
+
+/* Function to Donate money for the Crowdfunding Event */
+func (s *SmartContract) trackmyfunds(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
