@@ -14,7 +14,7 @@ Our proposed solution will help in managing and tracking donations made to PMCar
 
 Please follow the steps to run this application.
 
-* Clone the code
+* Clone the repository
 * Setup IBP extension on VS Code
 * Get connection profile and copy to `local` directory provided in github repository.
 * To start the server, perform the following steps.
