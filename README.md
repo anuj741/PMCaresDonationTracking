@@ -1,7 +1,11 @@
 # PMCaresDonationTracking
 **Blockchain Based application to track PM Care fund**
 
-This repository contains the code of a sample blockchain based application to raising and managing PM Care fund.
+Our proposed solution will help in managing and tracking donations made to PMCares fund therefore adding transparency, removing intermediaries and providing real-time audit trails of funds utilization.
+
+### High-Level Design
+
+![](images/hld.png)
 
 ### Flow Diagram
 
@@ -29,4 +33,8 @@ Please follow the steps to run this application.
   ```
 * Access the application
 
-You can access the webapp at `http://localhost:3000`.
+You can access the webapp at `http://localhost:3000`. You should see the following on your browser.
+
+![](images/landingpage.png)
+
+Using this application you can monitor the funds raised, donate the money, view the contributors and also track the utilization of funds.
