@@ -8,6 +8,7 @@ var eventDetailsRouter = require('./routes/eventDetails');
 var donationFormRouter = require('./routes/donationForm');
 var viewSupportersRouter = require('./routes/viewSupporters');
 var donateRouter = require('./routes/donateFund');
+var utilizationRouter = require('./routes/fundsUtilization')
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use('/', eventDetailsRouter);
 app.use('/donationForm', donationFormRouter);
 app.use('/viewSupporters', viewSupportersRouter);
 app.use('/donateFund', donateRouter);
+app.use('/fundsUtilization', utilizationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

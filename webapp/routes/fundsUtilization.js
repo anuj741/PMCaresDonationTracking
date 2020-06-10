@@ -9,7 +9,7 @@ var executed = true;
 var eventStartDate = "";
 
 router.get('/', function(req, res) {
-  res.render( 'fundsUtilization');
+  res.render( 'fundsUtilization', {eventName: "Project Aabhar"});
 });
 //   //get the event start date as of application launch date
 //   if (!executed) {
