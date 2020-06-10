@@ -1,5 +1,4 @@
-# PMCaresDonationTracking
-**Blockchain Based application to track PM Care fund**
+## Project Aabhar - Blockchain Based application to track PM Care fund
 
 Our proposed solution will help in managing and tracking donations made to PMCares fund therefore adding transparency, removing intermediaries and providing real-time audit trails of funds utilization.
 
