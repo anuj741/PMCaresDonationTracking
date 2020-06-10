@@ -12,48 +12,63 @@
 
 <body class="body">
     <center>
-      <h1> <%= eventName %> </h1>
+      <!-- <h1> <%= eventName %> </h1> -->
+      <h1> Project Aabhar </h1>
     </center>
   
     <div> <header>
-        <img src = "/img/1.png" height="210" width="380"/>
-        <img src = "/img/2.png" height="210" width="220"/>
-        <img src = "/img/3.png" height="210" width="380"/>
+        <img src = "/img/1.jpg" height="210" width="380"/>
+        <img src = "/img/2.jpeg" height="210" width="220"/>
+        <img src = "/img/3.jpg" height="210" width="380"/>
       </header>
     </div>
 
     <section>
       <nav>
-        <h4 style="background-color: white; color:red;font-size:24px">Goal:</label>  $<%= amount %></h4>
-        <!-- <h4 style="color:lightgreen;font-size:22px"><label style="color:lightgreen;font-size:22px" >Raised</label>  Rs.<%= raisedAmount %></h4> -->
-        <h4>Raised: $<%= raisedAmount %></h4>
-        <h4>Start Date: <%= eventDate %></h4>
-        <h4>Duration: <%= eventDuration %> Days</h4>
-        <div class="circle" font style="color:black;">
-          <circle><span><%= goalReachedPrecentage %>% Raised!</span></circle>
-        </div>
-        <div class="buttonsPanel">
+        <h4 style="background-color: white; color:red;font-size:24px">Raised:</label> &#8377 <%= amount %></h4>
+      
+      <div class="buttonsPanel">
             <form><button type="submit" name="Donate" id="donation" formaction="/donationForm">Donate</button> </form>
-            <form method="POST"> <button type="submit" name="Donater" id="donater" formaction="/viewSupporters">View Supporters</button></form>
+            <form method="POST"> <button type="submit" name="ViewDonater" id="donater" formaction="/viewSupporters">View Donaters</button></form>
+            <form><button type="submit" name="FundUtil" id="donation" formaction="/fundsUtilization">Funds Utilization</button> </form>
         </div>
       </nav>
 
       <article>
         <p> 
           <heading> About this Project </heading> </p>
-        
-         <p> <highlightedText> Who are we? </highlightedText> <br/>
-          <%= orgDetails %>
-        </p>
-
-        <p> <highlightedText> Why this campaign? </highlightedText> <br/>
-          <%= eventDetails %>
-        </p>
+          <!-- <hr> -->
+         <!-- <p> <highlightedText> Who are we? </highlightedText> <br/> -->
           
+          <highlightedText> Blockchain Enabled Platform for raising and managing PM CARES Fund for Covid-19 </highlightedText> 
+          <!-- <br/>   -->
+        </p>
+        <!-- <hr> -->
+        <p> <highlightedText> Key Objectives </highlightedText> <br/>
+          
+          <highlightedText> Keeping in mind the need for having a dedicated national fund with the primary objective of dealing with any kind of emergency or distress situation, like posed by the COVID-19 pandemic, and to provide relief to the affected, a public charitable trust under the name of ‘Prime Minister’s Citizen Assistance and Relief in Emergency Situations Fund’ (PM CARES Fund)’ has been set up. </highlightedText> 
+          <!-- <br/>   -->
+          <!-- <hr> -->
+          
+          <highlightedText> To render financial assistance, provide grants of payments of money or take such other steps as may be deemed necessary by the Board of Trustees to the affected population. </highlightedText> <br/>  
+         
+          
+        </p>
+        <!-- <hr> -->
         <p> We encourage every one to participate in this!
         </p>
+
+        <!-- <hr> -->
+        <a class="twitter-timeline"
+        href="https://twitter.com/PMcares"
+        data-width="300"
+        data-height="300">
+        Tweets by @PMCares
+        </a>
       </article>
     </section>
+
+    
 </body>
 
 </html>

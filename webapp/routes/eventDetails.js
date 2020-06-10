@@ -4,7 +4,8 @@ var bodyParser = require("body-parser");
 var request = require("request");
 const path = require('path');
 var config = require("../config");
-var executed = false;
+//var executed = false;
+var executed = true;
 var eventStartDate = "";
 
 router.get('/', function(req, res) {
@@ -71,38 +72,42 @@ router.get('/', function(req, res) {
         }
       });
     } else {
-      var url1 = config.rest_base_url + "/RegisterServlet";
-      console.log("Register User Operation");
-      var options = {
-            method : 'POST',
-            url : url1,
-            body : {},
-            json : true
-          };
-      // Get the event details from blockchain network
-      request.post(options, function(err, response1, body1){
-        if (!err) {
-          var url = config.rest_base_url + "/QueryEventServlet";
-          console.log("QueryEvent Operation");
-          var options1 = {
-            method : 'POST',
-            url : url,
-            body: {},
-            json : true
-          };
-          request.post(options1, function(error, response, body){
-            console.log(body);
-            var eventName = body['event_name'];
-            var orgDetails = body['org_details'];
-            var eventDetails = body['event_details'];
-            var eventDate = body['event_start_date'];
-            var raisedAmount = body['donated'];
-            var amount = body['amount'];
-            var goalReachedPrecentage = (raisedAmount/amount)*100
-            var eventDuration = body['event_duration'];
-            res.render( 'eventDetails', {eventName: eventName, orgDetails: orgDetails, eventDetails: eventDetails, raisedAmount: raisedAmount, amount: amount, goalReachedPrecentage: goalReachedPrecentage, eventDuration: eventDuration, eventDate:eventDate});
-          });
-        }
+      var url1 = "http://localhost:30001/api/chaincode";
+
+      console.log("QueryEvent Operation");
+      var options = {
+                    url: url1,
+                    method: "POST",
+                    body: {
+                      method: "query",
+                      params: {
+                        ctorMsg: {
+                          function: "queryEvent",
+                          args: ["E1"]
+                        }
+                      }
+                    },
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    json : true
+      }        
+      
+      request.post(options, function(error, response, body1){
+        console.log(body1);
+        var body = JSON.parse(body1);
+        var eventName = body['event_name'];
+        console.log(eventName);
+        // var orgDetails = body['org_details'];
+        // var eventDetails = body['event_details'];
+        // var eventDate = body['event_start_date'];
+        // var raisedAmount = body['donated'];
+        var amount = body['donated'];
+        // var goalReachedPrecentage = (raisedAmount/amount)*100
+        // var eventDuration = body['event_duration'];
+        res.render( 'eventDetails', {eventName: eventName, amount: amount});
+        // res.render( 'eventDetails', {eventName: eventName, orgDetails: orgDetails, eventDetails: eventDetails, raisedAmount: raisedAmount, amount: amount, goalReachedPrecentage: goalReachedPrecentage, eventDuration: eventDuration, eventDate:eventDate});
       });
     }
 });

@@ -32,14 +32,14 @@
     const date2 = new Date(today);
     const diffTime = Math.abs(date2.getTime() - date1.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    var raisedAmount = '<%=raisedAmount%>';
-    var amount = document.getElementById('amount').value
-    var total= parseInt(raisedAmount)+parseInt(amount);
-    if( total>5000 || diffDays>20 ){
-        alert("Donation request is not submitted successfully. ");
-    }else{
+    // var raisedAmount = '<%=raisedAmount%>';
+    // var amount = document.getElementById('amount').value
+    // var total= parseInt(raisedAmount)+parseInt(amount);
+    // if( total>5000 || diffDays>20 ){
+    //     alert("Donation request is not submitted successfully. ");
+    // }else{
         alert("Donation request is submitted successfully. ");
-    }
+    // }
   }
 </script>
   
@@ -72,7 +72,7 @@
           </tr>
 
           <tr>
-            <td>Amount ($) </td>
+            <td>Amount </td>
             <td><input type="text" name="amount" id="amount" /></td>
           </tr>
         </table>

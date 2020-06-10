@@ -7,7 +7,8 @@ var config = require("../config");
 
 
 /* GET home page. */
-var executed = false;
+// var executed = false;
+var executed = true;
 var eventStartDate="";
 router.get('/', function(req, res, next) {
   if (!executed) {
@@ -29,15 +30,29 @@ router.get('/', function(req, res, next) {
       eventStartDate=startDate;
     }
   var user={}
-  var url = config.rest_base_url + "/QueryEventServlet";
-      console.log("Query Operation");
-      var options1 = {
-        method : 'POST',
-        url : url,
-        body: {},
-        json : true
-      };
-      request.post(options1, function(error,response,body){
+  
+  var url1 = "http://localhost:30001/api/chaincode";
+      console.log("QueryEvent Operation - donationForm");
+      var options = {
+                    url: url1,
+                    method: "POST",
+                    body: {
+                      method: "query",
+                      params: {
+                        ctorMsg: {
+                          function: "queryEvent",
+                          args: ["E1"]
+                        }
+                      }
+                    },
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    json : true
+      }        
+      request.post(options, function(error,response,b){
+        var body = JSON.parse(b);
         var raisedAmount = JSON.parse(body['donated']);
         res.render( 'donationForm', {title : 'donationForm', raisedAmount : raisedAmount, date:eventStartDate});
       });

@@ -12,29 +12,70 @@ router.post('/', function(req, res) {
   var donation_id=[];
   var user_name=[];
 
-  var url = config.rest_base_url + "/QueryAllUsersServlet";
-  var url1 =config.rest_base_url  + "/QueryAllDonationsServlet";
-  console.log("Query Operation");
-  var options = {
-        method : 'POST',
-        url : url1,
-        body : user,
-        json : true
-      };
-  var options1 = {
-        method : 'POST',
-        url : url,
-        body : user,
-        json : true
-      };
+  // var url = config.rest_base_url + "/QueryAllUsersServlet";
+  // var url1 =config.rest_base_url  + "/QueryAllDonationsServlet";
+  // console.log("Query Operation");
+  // var options = {
+  //       method : 'POST',
+  //       url : url1,
+  //       body : user,
+  //       json : true
+  //     };
+  // var options1 = {
+  //       method : 'POST',
+  //       url : url,
+  //       body : user,
+  //       json : true
+  //     };
 
-  request.post(options, function(err1, response1, body){
+  var url = "http://localhost:30001/api/chaincode";
+  var options = {
+      method : 'POST',
+      url : url,
+      body: {
+        method: "query",
+        params: {
+           ctorMsg: {
+              function: "queryAllDonations",
+              args: []
+            }
+        }
+      },
+      headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+      },
+      json : true
+  }
+
+  var options1 = {
+    method : 'POST',
+    url : url,
+    body: {
+      method: "query",
+      params: {
+         ctorMsg: {
+            function: "queryAllUsers",
+            args: []
+          }
+      }
+    },
+    headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json'
+    },
+    json : true
+  }
+
+  request.post(options, function(err1, response1, bodyRes){
+    var body = JSON.parse(bodyRes);
     if (body != null){
       for (var i=0; i<body.length; i++){
         donation_id.push(body[i]['donation_id']);
         donated_amount.push(body[i]['donated_amount']);
       }
-      request.post(options1, function(err2, response2, body1){
+      request.post(options1, function(err2, response2, bodyRes1){
+        var body1 = JSON.parse(bodyRes1);
         for (var j=0; j<body1.length; j++){
           user_name.push(body1[j]['user_name']);
         }
